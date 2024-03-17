@@ -16,6 +16,10 @@ class GameSprite(sprite.Sprite):
    
     def reset(self):
         window.blit(self.image, (self.rect.x, self.rect.y))
+    
+    def fire(self):
+        bullet = Bullet('fire.png',self.rect.centerx,self.rect.centery,15,15,10)
+        bullets.add(bullet)  
 
 # клас-спадкоємець для спрайту-гравця (керується стрілками)    
 class Player(GameSprite):
@@ -26,7 +30,12 @@ class Player(GameSprite):
         if keys[K_RIGHT] and self.rect.y < win_width - 100:
             self.rect.x += self.speed
 
-
+bullets = sprite.Group()
+class Bullet(GameSprite):
+    def update(self): #функція пострілу праворуч
+        self.rect.x += 10
+        if self.rect.x > 1000:
+            self.kill()
 #ігрова сцена:
 window =display.set_mode((800,600))
 picture =transform.scale(image.load("image.jpg"),(800,600))
@@ -35,8 +44,12 @@ win_width = 600
 win_height = 500
 
 
-player1 = Player('Mario.png',50,295,10,200,220)
-player2 = Player("mushroom.png",100,295,10,150,100)
+player1 = Player('Mario.png',50,295,10,100,100)
+player2 = Player("mushroom.png",250,350,10,150,150)
+player3 = Player("mushroom.png",450,350,10,150,150)
+player4 = Player("mushroom.png",650,350,10,150,150)
+player5 = Player("star.png",370,300,10,50,50)
+player6 = Player("star.png",570,300,10,50,50)
 
 
 # змінні для стрибка
@@ -52,20 +65,22 @@ while game:
     for e in event.get():
         if e.type == QUIT:
             game = False
-    
+        elif e.type == KEYDOWN:
+                if e.key == K_SPACE:
+                    player1.fire()    
 
 
     
     keys = key.get_pressed()
     if not is_jump:
-        if keys[K_SPACE]:
+        if keys[K_UP]:
             is_jump = True
     else:
         if jump_count >= -10:
             neg = 1
             if jump_count < 0:
                 neg = -1
-            player1.rect.y -= (jump_count ** 2) * 0.5 * neg
+            player1.rect.y -= (jump_count ** 2) * 0.4 * neg
             jump_count -= 1
         else:
             is_jump = False
@@ -73,6 +88,22 @@ while game:
     window.blit(picture,(0,0))
     player1.reset()
     player2.reset()
+    player3.reset()
+    player4.reset()
+    player5.reset()
+    player6.reset()
+    bullets.draw(window)
+    bullets.update()
+
+    if sprite.collide_rect(player1,player2) :
+        game = False
+    if sprite.collide_rect(player1,player3) :
+        game = False
+    if sprite.collide_rect(player1,player4) :
+        game = False
+
+
+
 
     player1.move()
 
