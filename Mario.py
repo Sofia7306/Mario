@@ -39,17 +39,19 @@ class Bullet(GameSprite):
 #ігрова сцена:
 window =display.set_mode((800,600))
 picture =transform.scale(image.load("image.jpg"),(800,600))
-
+picture2 =transform.scale(image.load("image2.jpg"),(800,600))
 win_width = 600
 win_height = 500
 
 
-player1 = Player('Mario.png',50,295,10,100,100)
-player2 = Player("mushroom.png",250,350,10,150,150)
-player3 = Player("mushroom.png",450,350,10,150,150)
-player4 = Player("mushroom.png",650,350,10,150,150)
+player1 = Player('Mario.png',50,430,10,70,70)
+player2 = Player("mushroom.png",250,430,10,50,50)
+player3 = Player("mushroom.png",450,430,10,50,50)
+player4 = Player("mushroom.png",650,430,10,50,50)
 player5 = Player("star.png",370,300,10,50,50)
 player6 = Player("star.png",570,300,10,50,50)
+player7 = Player("bear.png",250,430,10,50,50)
+player8 = Player("fox.png",450,430,10,50,50)
 
 
 # змінні для стрибка
@@ -60,6 +62,8 @@ jump_count = 10
 game = True
 clock = time.Clock()
 
+lvl1 = True
+lvl2 = False
 
 while game:
     for e in event.get():
@@ -85,29 +89,43 @@ while game:
         else:
             is_jump = False
             jump_count = 10
-    window.blit(picture,(0,0))
-    player1.reset()
-    player2.reset()
-    player3.reset()
-    player4.reset()
-    player5.reset()
-    player6.reset()
-    bullets.draw(window)
-    bullets.update()
+    if lvl1:
+        window.blit(picture,(0,0))
+        player1.reset()
+        player2.reset()
+        player3.reset()
+        player4.reset()
+        player5.reset()
+        player6.reset()
+        bullets.draw(window)
+        bullets.update()
 
-    if sprite.collide_rect(player1,player2) :
-        game = False
-    if sprite.collide_rect(player1,player3) :
-        game = False
-    if sprite.collide_rect(player1,player4) :
-        game = False
+        if sprite.collide_rect(player1,player2) :
+            game = False
+        if sprite.collide_rect(player1,player3) :
+            game = False
+        if sprite.collide_rect(player1,player4) :
+            game = False
+        player1.move()
+
+        if player1.rect.x >= 800:
+            lvl1 = False
+            lvl2 = True
+            player1.rect.x = 50
+            player1.rect.y = 430
 
 
 
+        
+    if lvl2:
+        window.blit(picture2,(0,0))
+    
+        player1.reset()
+        player1.move()
+        player8.reset()
+        player7.reset()
 
-    player1.move()
 
-   
    
     display.update()
     clock.tick(60)
