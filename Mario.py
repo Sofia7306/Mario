@@ -36,22 +36,31 @@ class Bullet(GameSprite):
         self.rect.x += 10
         if self.rect.x > 1000:
             self.kill()
+        if self.rect.colliderect(player7.rect):
+            player7.rect.y = -2000
 #ігрова сцена:
 window =display.set_mode((800,600))
 picture =transform.scale(image.load("image.jpg"),(800,600))
 picture2 =transform.scale(image.load("image2.jpg"),(800,600))
+picture3 =transform.scale(image.load("image3.jpg"),(800,600))
 win_width = 600
 win_height = 500
 
 
-player1 = Player('Mario.png',50,430,10,70,70)
-player2 = Player("mushroom.png",250,430,10,50,50)
+player1 = Player('Mario.png',40,400,10,70,70)
+player2 = Player("mushroom.png",240,430,10,50,50)
 player3 = Player("mushroom.png",450,430,10,50,50)
-player4 = Player("mushroom.png",650,430,10,50,50)
-player5 = Player("star.png",370,300,10,50,50)
-player6 = Player("star.png",570,300,10,50,50)
-player7 = Player("bear.png",250,430,10,50,50)
-player8 = Player("fox.png",450,430,10,50,50)
+player4 = Player("mushroom.png",660,430,10,50,50)
+player5 = Player("star.png",380,300,10,50,50)
+player6 = Player("star.png",580,300,10,50,50)
+player7 = Player("bear.png",1200,420,10,100,100)
+player8 = Player("fox.png",350,450,10,70,70)
+player9 = Player("fox.png",650,450,10,70,70)
+player10 = Player("tiger.png",1000,450,6,140,70)
+player11 = Player("tiger.png",1500,450,7,140,70)
+player12 = Player("tiger.png",2000,450,8,140,70)
+player13 = Player("tiger.png",2500,450,9,140,70)
+
 
 
 # змінні для стрибка
@@ -64,6 +73,7 @@ clock = time.Clock()
 
 lvl1 = True
 lvl2 = False
+lvl3 = False
 
 while game:
     for e in event.get():
@@ -111,6 +121,7 @@ while game:
         if player1.rect.x >= 800:
             lvl1 = False
             lvl2 = True
+            lvl3 = False
             player1.rect.x = 50
             player1.rect.y = 430
 
@@ -124,6 +135,54 @@ while game:
         player1.move()
         player8.reset()
         player7.reset()
+        player9.reset()
+        bullets.draw(window)
+        bullets.update()
+        player7.rect.x -= 5
+
+        if sprite.collide_rect(player1,player7) :
+            game = False
+        if sprite.collide_rect(player1,player8) :
+            game = False
+        if sprite.collide_rect(player1,player9) :
+            game = False
+        player1.move()
+
+        if player1.rect.x >= 800:
+            lvl1 = False
+            lvl2 = False
+            lvl3 = True
+            player1.rect.x = 50
+            player1.rect.y = 430
+        
+    if lvl3:
+        window.blit(picture3,(0,0))
+        player1.reset()
+        player1.move()
+        player10.reset()
+        player10.move()
+        player11.reset()
+        player11.move()
+        player12.reset()
+        player12.move()
+        player13.reset()
+        player13.move()
+
+        player10.rect.x -= 5
+        player11.rect.x -= 5
+        player12.rect.x -= 5
+        player13.rect.x -= 5
+        if sprite.collide_rect(player1,player10) :
+            game = False
+        if sprite.collide_rect(player1,player11) :
+            game = False
+        if sprite.collide_rect(player1,player12) :
+            game = False
+        if sprite.collide_rect(player1,player13) :
+            game = False
+
+
+
 
 
    
